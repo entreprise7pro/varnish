@@ -52,7 +52,7 @@ Déclenche une session bash afin de contrôler ton serveur varnish: sudo exec -i
 
 Dépistage: varnishlog
 
- ## varnish_auth j'ai dû adapter le vcl 3.x à 4.x/6.x comme ci mentionné https://varnish-cache.org/docs/5.1/whats-new/upgrading-4.0.html
+ ## varnish_auth https://www.drupal.org/sandbox/leonnk/2128311 j'ai dû adapter le vcl 3.x à 4.x/6.x comme ci mentionné https://varnish-cache.org/docs/5.1/whats-new/upgrading-4.0.html
 
 # Drupal config (varnish_auth) cacher les pages authentifiés.
   Activer le module varnish_auth suit les conseils dans README.txt sauf ignorer example.vcl ceci étant déjà dans les fichiers .tmpl de entreprise7pro/varnish.
