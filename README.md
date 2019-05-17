@@ -25,7 +25,7 @@
 
 ❗For better reliability we release images with stability tags (`wodby/varnish:6-X.X.X`) which correspond to [git tags](https://github.com/wodby/varnish/releases). We strongly recommend using images only with stability tags. 
 
-##Usage example:
+## Exemple d'usage:
 
 Changer le hostname de wwwsst.local à votre nom de hôte de ton site web. Éditer presets/drupal.vcl.tmpl
 Changer le chemin vers le module drupal varnish_auth (sandbox pour l'instant), change ceci: /profiles/portail/modules/custom/varnish_auth/access_check.php
@@ -51,7 +51,7 @@ Déclenche une session bash afin de contrôler ton serveur varnish: sudo exec -i
 
 Dépistage: varnishlog
 
-##Drupal config
+## Drupal config
   Activer le module varnish_auth suit les conseils dans README.txt sauf ignorer example.vcl ceci étant déjà dans les fichiers .tmpl de entreprise7pro/varnish.
 
   Si ce n'est pas déjà configuré ajouter le config varnish dans ton fichier drupal settings.php
