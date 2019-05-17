@@ -25,10 +25,11 @@
 
 ❗For better reliability we release images with stability tags (`wodby/varnish:6-X.X.X`) which correspond to [git tags](https://github.com/wodby/varnish/releases). We strongly recommend using images only with stability tags. 
 
-## Exemple d'usage:
+## Exemple d'usage drupal varnish_auth :
+ # basé sur https://joshwaihi.com/content/authenticated-page-caching-varnish-drupal
 
 Changer le hostname de wwwsst.local à votre nom de hôte de ton site web. Éditer presets/drupal.vcl.tmpl
-Changer le chemin vers le module drupal varnish_auth (sandbox pour l'instant), change ceci: /profiles/portail/modules/custom/varnish_auth/access_check.php
+Changer le chemin vers le module drupal varnish_auth (sandbox pour l'instant https://www.drupal.org/sandbox/leonnk/2128311 ), change ceci: /profiles/portail/modules/custom/varnish_auth/access_check.php
  à /sites/all/modules/contrib/varnish_auth/access_check.php se trouve aussi dans presets/drupal.vcl.tmpl 
 Quand ton config est bon lance un sudo make.
 Changer l'adresse ip 172.17.0.1 à l'adresse ip de ton hôte docker contenant apache et ton site web Drupal.
