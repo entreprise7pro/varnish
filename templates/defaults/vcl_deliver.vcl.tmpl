@@ -1,13 +1,34 @@
 sub vcl_deliver {
-    unset resp.http.X-VC-Req-Host;
-    unset resp.http.X-VC-Req-URL;
-    unset resp.http.X-VC-Req-URL-Base;
-    unset resp.http.Via;
+  // Début varnish_auth
+  if (obj.hits > 0) {
+    set resp.http.X-Varnish-Cache = "HIT";
+  }
+  else {
+    set resp.http.X-Varnish-Cache = "MISS";
+  }
 
-    # Remove ban-lurker friendly custom headers when delivering to client.
-    unset resp.http.X-Url;
-    unset resp.http.X-Host;
-    unset resp.http.Cache-Tags;
+ // If the response contains X-Original-URL and X-Varnish-Auth header
+ if (req.http.X-Original-URL) {
+   set req.url = req.http.X-Original-URL;
+   set req.http.X-Varnish-Auth = resp.http.X-Varnish-Auth;
+   if (resp.http.X-Varnish-Auth == "1") {
+     // Unset the cookie
+     unset req.http.Cookie;
+   }
+   unset req.http.X-Original-URL;
+   return (restart);
+ }
+ // Fin varnish_auth
+
+#    unset resp.http.X-VC-Req-Host;
+#    unset resp.http.X-VC-Req-URL;
+#    unset resp.http.X-VC-Req-URL-Base;
+#    unset resp.http.Via;
+#
+#    # Remove ban-lurker friendly custom headers when delivering to client.
+#    unset resp.http.X-Url;
+#    unset resp.http.X-Host;
+#    unset resp.http.Cache-Tags;
 
     if (obj.hits > 0) {
         set resp.http.X-VC-Cache = "HIT";

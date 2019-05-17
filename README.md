@@ -25,6 +25,51 @@
 
 ❗For better reliability we release images with stability tags (`wodby/varnish:6-X.X.X`) which correspond to [git tags](https://github.com/wodby/varnish/releases). We strongly recommend using images only with stability tags. 
 
+##Usage example:
+
+Changer le hostname de wwwsst.local à votre nom de hôte de ton site web. Éditer presets/drupal.vcl.tmpl
+Changer le chemin vers le module drupal varnish_auth (sandbox pour l'instant), change ceci: /profiles/portail/modules/custom/varnish_auth/access_check.php
+ à /sites/all/modules/contrib/varnish_auth/access_check.php se trouve aussi dans presets/drupal.vcl.tmpl 
+Quand ton config est bon lance un sudo make.
+Changer l'adresse ip 172.17.0.1 à l'adresse ip de ton hôte docker contenant apache et ton site web Drupal.
+Changer VARNISH_SECRET de 00000000-bbbb-cccc-dddd-eeeeeeeee999 à ton secret si exclus un code sera généré par le serveur.
+
+sudo make;
+
+sudo docker -D run --detach \
+  -e VARNISH_BACKEND_HOST=wwwsst.local \
+  -e VARNISH_SECRET=00000000-bbbb-cccc-dddd-eeeeeeeee999 \
+  -e VARNISH_CONFIG_PRESET=drupal \
+  --add-host "wwwsst.local:172.17.0.1" \
+  --name=varnish \
+  -itd entreprise7pro/varnish:6.0
+
+S'assurer que ton docker fonctionnent:
+sudo docker ps;
+
+Déclenche une session bash afin de contrôler ton serveur varnish: sudo exec -it varnish bash
+
+Dépistage: varnishlog
+
+##Drupal config
+  Activer le module varnish_auth suit les conseils dans README.txt sauf ignorer example.vcl ceci étant déjà dans les fichiers .tmpl de entreprise7pro/varnish.
+
+  Si ce n'est pas déjà configuré ajouter le config varnish dans ton fichier drupal settings.php
+   ex: 
+// sites/default/settings.php
+// Le chiffre '2' correspond au rôle 'authenticated user' , si tu veut d'autres rôles configuré il faut alors ajouter les autres.
+$conf['varnish_auth_roles'] = array(2);
+$conf['varnish_auth_domains'] = array('wwwsst.local'); // Change wwwsst.local à votre domaine.
+
+// Ajouter ceci pour varnish!
+$base_path = ($dir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/')) ? $dir . '/' : '/';
+ini_set('session.cookie_path', $base_path);
+$conf['cache_backends'] = array('sites/all/modules/contrib/varnish/varnish.cache.inc');
+$conf['cache_class_cache_page'] = 'VarnishCache';
+
+
+
+
 Overview:
 
 * All images are based on Alpine Linux

@@ -1,5 +1,7 @@
 -include env.mk
 
+#VARNISH_VER ?= 4.1.10
+# Je pensait me servir de 4.1.10 mais j'ai testé 6.0.3 et ça marche bien sans perdre compatibilité.
 VARNISH_VER ?= 6.0.3
 VARNISH_VER_MINOR = $(shell v='$(VARNISH_VER)'; echo "$${v%.*}")
 
@@ -13,7 +15,7 @@ endif
 
 TAG ?= $(VARNISH_VER_MINOR)
 
-REPO = wodby/varnish
+REPO = entreprise7pro/varnish
 NAME = varnish-$(VARNISH_VER_MINOR)
 
 ifneq ($(STABILITY_TAG),)
